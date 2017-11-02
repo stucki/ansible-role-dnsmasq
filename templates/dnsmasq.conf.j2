@@ -12,7 +12,7 @@
 user={{ dnsmasq_user }}
 group={{ dnsmasq_group }}
 
-{% if dnsmasq_pidfile is defined -%}
+{% if dnsmasq_pidfile is defined and dnsmasq_pidfile -%}
 pid-file={{ dnsmasq_pidfile }}
 {% endif %}
 
@@ -20,7 +20,7 @@ pid-file={{ dnsmasq_pidfile }}
 # specified interfaces (and the loopback) give the name of the
 # interface (eg eth0) here.
 # Repeat the line for more than one interface.
-{% if dnsmasq_conf_listen is defined -%}
+{% if dnsmasq_conf_listen is defined and dnsmasq_conf_listen is iterable -%}
 {% for interface in dnsmasq_conf_listen -%}
 {% if interface | ipaddr -%}
 listen-address={{ interface }}
@@ -30,7 +30,7 @@ interface={{ interface }}
 {% endfor %}
 {% endif %}
 
-{% if dnsmasq_conf_bind_interfaces is defined -%}
+{% if dnsmasq_conf_bind_interfaces is defined and dnsmasq_conf_bind_interfaces -%}
 # On systems which support it, dnsmasq binds the wildcard address,
 # even when it is listening on only some interfaces. It then discards
 # requests that it shouldn't reply to. This has the advantage of
@@ -45,7 +45,7 @@ bind-interfaces
 {% endif %}
 {% endif %}
 
-{% if dnsmasq_conf_log is defined -%}
+{% if dnsmasq_conf_log is defined and dnsmasq_conf_log -%}
 # Set the facility to which dnsmasq will send syslog entries, this defaults to
 # DAEMON, and to LOCAL0 when debug mode is in operation. If the facility given
 # contains at least one '/' character, it is taken to be a filename, and dnsmasq
@@ -58,7 +58,7 @@ log-facility={{ dnsmasq_conf_log }}
 {% endif %}
 {% endif %}
 
-{% if dnsmasq_conf_log_async is defined -%}
+{% if dnsmasq_conf_log_async is defined and dnsmasq_conf_log_async -%}
 # Enable asynchronous logging and optionally set the limit on the number of
 # lines which will be queued by dnsmasq when writing to the syslog is slow.
 {% if dnsmasq_conf_log_async is none %}
@@ -119,7 +119,7 @@ clear-on-reload
 # Set the dns memory cachesize here.
 cache-size={{ dnsmasq_conf_cache_size | default('1024') }}
 
-{% if dnsmasq_conf_negcache is defined -%}
+{% if dnsmasq_conf_negcache is defined and dnsmasq_conf_negcache -%}
 {% if not dnsmasq_conf_negcache is none -%}
 # Negative replies from upstream servers normally contain time-to-live
 # information in SOA records which dnsmasq uses for caching.
@@ -155,7 +155,7 @@ resolv-file={{ dnsmasq_conf_resolv }}
 no-resolv
 {% endif %}
 
-{% if dnsmasq_conf_mx is defined -%}
+{% if dnsmasq_conf_mx is defined and dnsmasq_conf_mx -%}
 {% if dnsmasq_conf_mx == '_self' -%}
 # Return an MX record pointing to itself for all local machines.
 selfmx
@@ -164,7 +164,7 @@ selfmx
 # machines.
 localmx
 {% else %}
-{% if dnsmasq_conf_mx_domain is defined -%}
+{% if dnsmasq_conf_mx_domain is defined and dnsmasq_conf_mx_domain -%}
 # Return an MX record named "maildomain.com" with target
 # servermachine.com and preference 50
 mx-host={{ dnsmasq_conf_mx_domain }},{{ dnsmasq_conf_mx }},{{ dnsmasq_conf_mx_pref | default('1') }}
