@@ -15,20 +15,6 @@
     mode: 0755
     state: directory
 
-- name: Create empty log file
-  file:
-    path: "{{ dnsmasq_conf_log }}"
-    owner: "{{ dnsmasq_user }}"
-    group: "{{ dnsmasq_group }}"
-    mode: 0644
-    state: touch
-  when: >
-    dnsmasq_conf_log is defined and
-    dnsmasq_conf_log is not none and
-    dnsmasq_conf_log != '-'
-  changed_when: False
-
-
 - block:
   - name: Create DHCP dnsmasq configuration
     template:
